@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.fms.dto.DriverDto;
 import com.fms.entity.Driver;
 import com.fms.service.DriverService;
 
@@ -13,15 +14,22 @@ import com.fms.service.DriverService;
 public class DriverController {
 
     @Autowired
-    private DriverService service;
+    private DriverService driverService;
 
     @PostMapping("/add")
-    public Driver addDriver(@RequestBody Driver driver) {
-        return service.saveDriver(driver);
+    public Driver addDriver(@RequestBody DriverDto dto) {
+        return driverService.saveDriver(dto);
     }
 
     @GetMapping("/all")
     public List<Driver> getAllDrivers() {
-        return service.getAllDrivers();
+        return driverService.getAllDrivers();
+    }
+    @PutMapping("/assign/{driverId}/{vehicleId}")
+    public Driver assignDriverToVehicle(
+            @PathVariable Long driverId,
+            @PathVariable Long vehicleId) {
+
+        return driverService.assignDriverToVehicle(driverId, vehicleId);
     }
 }

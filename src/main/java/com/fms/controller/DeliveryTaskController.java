@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.fms.dto.DeliveryTaskDto;
 import com.fms.entity.DeliveryTask;
 import com.fms.service.DeliveryTaskService;
 
@@ -13,19 +14,17 @@ import com.fms.service.DeliveryTaskService;
 public class DeliveryTaskController {
 
     @Autowired
-    private DeliveryTaskService service;
+    private DeliveryTaskService taskService;
 
-    // ✅ FIXED: vehicleId added
+    // Add Task
     @PostMapping("/add")
-    public DeliveryTask addTask(
-            @RequestBody DeliveryTask task,
-            @RequestParam Long vehicleId) {
-
-        return service.saveTask(task, vehicleId);
+    public DeliveryTask addTask(@RequestBody DeliveryTaskDto dto) {
+        return taskService.saveTask(dto);
     }
 
+    // Get All Tasks
     @GetMapping("/all")
     public List<DeliveryTask> getAllTasks() {
-        return service.getAllTasks();
+        return taskService.getAllTasks();
     }
 }

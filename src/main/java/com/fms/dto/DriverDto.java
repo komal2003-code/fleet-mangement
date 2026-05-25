@@ -1,30 +1,13 @@
-package com.fms.entity;
+package com.fms.dto;
 
-import jakarta.persistence.*;
-import jakarta.persistence.ManyToOne;
-@Entity
-public class Driver {
-
-	@ManyToOne
-	private Vehicle vehicle;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class DriverDto {
 
     private String driverName;
     private String licenseNumber;
     private String licenseValidTill;
     private int shiftHours;
 
-    public Driver() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public DriverDto() {
     }
 
     public String getDriverName() {
@@ -57,12 +40,5 @@ public class Driver {
 
     public void setShiftHours(int shiftHours) {
         this.shiftHours = shiftHours;
-    }
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
     }
 }

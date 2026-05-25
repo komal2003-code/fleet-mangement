@@ -5,31 +5,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fms.dto.DeliveryTaskDto;
 import com.fms.entity.DeliveryTask;
-import com.fms.entity.Vehicle;
 import com.fms.repository.DeliveryTaskRepository;
-import com.fms.repository.VehicleRepository;
 
 @Service
 public class DeliveryTaskService {
 
     @Autowired
-    private DeliveryTaskRepository taskRepo;
+    private DeliveryTaskRepository repo;
 
-    @Autowired
-    private VehicleRepository vehicleRepo;
+    public DeliveryTask saveTask(DeliveryTaskDto dto) {
 
-    public DeliveryTask saveTask(DeliveryTask task, Long vehicleId) {
+        DeliveryTask task = new DeliveryTask();
 
-        Vehicle vehicle = vehicleRepo.findById(vehicleId)
-                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+        task.setPickupLocation(dto.getPickupLocation());
+        task.setDropLocation(dto.getDropLocation());
+        task.setStatus(dto.getStatus());
 
-        task.setVehicle(vehicle);
-
-        return taskRepo.save(task);
+        return repo.save(task);
     }
 
     public List<DeliveryTask> getAllTasks() {
-        return taskRepo.findAll();
+        return repo.findAll();
     }
 }
