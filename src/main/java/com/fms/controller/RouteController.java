@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import com.fms.dto.RouteDto;
 import com.fms.entity.Route;
 import com.fms.service.RouteService;
+import com.fms.service.RouteOptimizationService;
+import com.fms.dto.RouteResponse;
+import com.fms.dto.CoordinateRequest;
 
 @RestController
 @RequestMapping("/route")
@@ -15,6 +18,9 @@ public class RouteController {
 
     @Autowired
     private RouteService routeService;
+    
+    @Autowired
+    private RouteOptimizationService routeOptimizationService;
 
     // Add Route
     @PostMapping("/add")
@@ -27,4 +33,11 @@ public class RouteController {
     public List<Route> getAllRoutes() {
         return routeService.getAllRoutes();
     }
+    @PostMapping("/optimize")
+    public RouteResponse optimizeRoute(
+            @RequestBody CoordinateRequest request) {
+
+        return routeOptimizationService.getRoute(request);
+    }
+
 }
