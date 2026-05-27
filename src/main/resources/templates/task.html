@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Delivery Task</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🚚 FMS</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/driver">Drivers</a>
+        <a href="/vehicle">Vehicles</a>
+        <a href="/task">Delivery Tasks</a>
+        <a href="/route">Routes</a>
+        <a href="/optimize">Route Optimization</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <h2>Delivery Task</h2>
+
+        <!-- FORM -->
+        <div class="card form-card mt-4 p-4">
+
+            <form action="/task/save" method="post">
+
+                <div class="mb-3">
+                    <label>Pickup Location</label>
+                    <input type="text" class="form-control" name="pickupLocation" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Drop Location</label>
+                    <input type="text" class="form-control" name="dropLocation" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Status</label>
+                    <input type="text" class="form-control" name="status" value="PENDING">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Create Task
+                </button>
+
+            </form>
+
+            <!-- SUCCESS MESSAGE -->
+            <div th:if="${success}" class="alert alert-success mt-3">
+                <span th:text="${success}"></span>
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="card mt-4 p-4">
+
+            <h4>Registered Tasks</h4>
+
+            <table class="table table-bordered table-hover mt-3">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Pickup Location</th>
+                        <th>Drop Location</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="t : ${tasks}">
+                        <td th:text="${t.id}"></td>
+                        <td th:text="${t.pickupLocation}"></td>
+                        <td th:text="${t.dropLocation}"></td>
+                        <td th:text="${t.status}"></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

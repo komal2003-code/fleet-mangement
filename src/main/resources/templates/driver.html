@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Driver Registration</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🚚 FMS</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/driver">Drivers</a>
+        <a href="/vehicle">Vehicles</a>
+        <a href="/task">Delivery Tasks</a>
+        <a href="/route">Routes</a>
+        <a href="/optimize">Route Optimization</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <h2>Driver Registration</h2>
+
+        <!-- FORM -->
+        <div class="card form-card mt-4 p-4">
+
+            <form action="/driver/save" method="post">
+
+                <div class="mb-3">
+                    <label>Driver Name</label>
+                    <input type="text"
+                           class="form-control"
+                           name="driverName"
+                           placeholder="Enter driver name"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label>License Number</label>
+                    <input type="text"
+                           class="form-control"
+                           name="licenseNumber"
+                           placeholder="Enter license number"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label>License Valid Till</label>
+                    <input type="text"
+                           class="form-control"
+                           name="licenseValidTill"
+                           placeholder="Enter expiry date"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Shift Hours</label>
+                    <input type="number"
+                           class="form-control"
+                           name="shiftHours"
+                           placeholder="Enter shift hours"
+                           required>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Register Driver
+                </button>
+
+            </form>
+
+            <!-- Success Message -->
+            <div th:if="${success}" class="alert alert-success mt-3">
+                <span th:text="${success}"></span>
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="card mt-4 p-4">
+
+            <h4>Registered Drivers</h4>
+
+            <table class="table table-bordered table-hover mt-3">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Driver Name</th>
+                        <th>License Number</th>
+                        <th>License Valid Till</th>
+                        <th>Shift Hours</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="d : ${drivers}">
+                        <td th:text="${d.id}"></td>
+                        <td th:text="${d.driverName}"></td>
+                        <td th:text="${d.licenseNumber}"></td>
+                        <td th:text="${d.licenseValidTill}"></td>
+                        <td th:text="${d.shiftHours}"></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

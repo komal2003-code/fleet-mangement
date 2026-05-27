@@ -15,6 +15,7 @@ public class VehicleService {
     @Autowired
     private VehicleRepository repo;
 
+    // API save (DTO)
     public Vehicle saveVehicle(VehicleDto dto) {
 
         Vehicle vehicle = new Vehicle();
@@ -27,7 +28,15 @@ public class VehicleService {
         return repo.save(vehicle);
     }
 
+    // UI save (Form)
+    public Vehicle saveVehicle(Vehicle vehicle) {
+
+        return repo.save(vehicle);
+    }
+
+    // Get all
     public List<Vehicle> getAllVehicles() {
+
         return repo.findAll();
     }
 }

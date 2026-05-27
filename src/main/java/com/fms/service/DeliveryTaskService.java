@@ -15,6 +15,7 @@ public class DeliveryTaskService {
     @Autowired
     private DeliveryTaskRepository repo;
 
+    // ✅ 1. DTO version (REST / API use)
     public DeliveryTask saveTask(DeliveryTaskDto dto) {
 
         DeliveryTask task = new DeliveryTask();
@@ -26,6 +27,12 @@ public class DeliveryTaskService {
         return repo.save(task);
     }
 
+    // ✅ 2. ENTITY version (HTML form use)
+    public DeliveryTask saveTask(DeliveryTask task) {
+        return repo.save(task);
+    }
+
+    // GET ALL
     public List<DeliveryTask> getAllTasks() {
         return repo.findAll();
     }
