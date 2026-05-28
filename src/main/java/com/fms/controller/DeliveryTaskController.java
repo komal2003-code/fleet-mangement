@@ -2,6 +2,7 @@ package com.fms.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,9 @@ public class DeliveryTaskController {
 
     // Add Task
     @PostMapping("/add")
-    public DeliveryTask addTask(@RequestBody DeliveryTaskDto dto) {
+    public DeliveryTask addTask(
+            @Valid @RequestBody DeliveryTaskDto dto)
+    {
         return taskService.saveTask(dto);
     }
 
@@ -26,5 +29,26 @@ public class DeliveryTaskController {
     @GetMapping("/all")
     public List<DeliveryTask> getAllTasks() {
         return taskService.getAllTasks();
+    }
+
+    // Dispatch
+    @PutMapping("/dispatch/{id}")
+    public DeliveryTask dispatchTask(@PathVariable Long id)
+    {
+        return taskService.dispatchTask(id);
+    }
+
+    // Transit
+    @PutMapping("/transit/{id}")
+    public DeliveryTask transitTask(@PathVariable Long id)
+    {
+        return taskService.transitTask(id);
+    }
+
+    // Deliver
+    @PutMapping("/deliver/{id}")
+    public DeliveryTask deliverTask(@PathVariable Long id)
+    {
+        return taskService.deliverTask(id);
     }
 }

@@ -22,6 +22,7 @@
         <a href="/task">Delivery Tasks</a>
         <a href="/route">Routes</a>
         <a href="/optimize">Route Optimization</a>
+		<a href="/dispatch">Dispatch</a>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -32,19 +33,27 @@
         <!-- FORM -->
         <div class="card p-4 mt-4">
 
-			<form action="/optimize" method="post">
+            <form action="/optimize" method="post">
 
                 <div class="mb-3">
-                    <label>Stops JSON (Paste here)</label>
-                    <textarea class="form-control" name="json" rows="6"
-                        placeholder='[
-  {"name":"Pune","lat":18.52,"lon":73.85},
-  {"name":"Mumbai","lat":19.07,"lon":72.87},
-  {"name":"Nashik","lat":19.99,"lon":73.78}
-]'></textarea>
+
+                    <label class="form-label">
+                        Stops JSON (Paste here)
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        name="json"
+                        rows="6"
+                        th:text="${json}">[
+{"name":"Pune","lat":18.52,"lon":73.85},
+{"name":"Mumbai","lat":19.07,"lon":72.87},
+{"name":"Nashik","lat":19.99,"lon":73.78}
+]</textarea>
+
                 </div>
 
-                <button class="btn btn-primary">
+                <button type="submit" class="btn btn-primary">
                     Optimize Route
                 </button>
 
@@ -53,23 +62,36 @@
         </div>
 
         <!-- RESULT -->
-        <div class="card p-4 mt-4" th:if="${result != null}">
+        <div class="card p-4 mt-4"
+             th:if="${result != null}">
 
             <h4>Optimized Result</h4>
 
-            <p><b>Total Distance:</b> <span th:text="${result.totalDistance}"></span></p>
-            <p><b>Duration:</b> <span th:text="${result.duration}"></span></p>
+            <p>
+                <b>Total Distance:</b>
+                <span th:text="${result.totalDistance}"></span>
+            </p>
+
+            <p>
+                <b>Duration:</b>
+                <span th:text="${result.duration}"></span>
+            </p>
 
             <h5>Route Order:</h5>
+
             <ul>
-                <li th:each="r : ${result.optimizedRoute}" th:text="${r}"></li>
+                <li th:each="r : ${result.optimizedRoute}"
+                    th:text="${r}">
+                </li>
             </ul>
 
         </div>
-		<!-- ERROR -->
-		       <div class="alert alert-danger mt-3" th:if="${error}">
-		           <span th:text="${error}"></span>
-		       </div>
+
+        <!-- ERROR -->
+        <div class="alert alert-danger mt-3"
+             th:if="${error != null}">
+            <span th:text="${error}"></span>
+        </div>
 
     </div>
 

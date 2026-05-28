@@ -14,64 +14,78 @@ public class RouteOptimizationService {
 
     public RouteResponse getRoute(CoordinateRequest request) {
 
-        List<CoordinateDto> remaining =
-                new ArrayList<>(request.getStops());
+        try {
 
-        List<String> optimizedRoute =
-                new ArrayList<>();
+            List<CoordinateDto> remaining =
+                    new ArrayList<>(request.getStops());
 
-        double totalDistance = 0;
+            List<String> optimizedRoute =
+                    new ArrayList<>();
 
-        if (remaining.isEmpty()) {
-            return new RouteResponse(
-                    "0 km",
-                    "0 hours",
-                    optimizedRoute
-            );
-        }
+            double totalDistance = 0;
 
-        CoordinateDto current =
-                remaining.remove(0);
+            if (remaining.isEmpty()) {
 
-        optimizedRoute.add(current.getName());
-
-        while (!remaining.isEmpty()) {
-
-            CoordinateDto nearest = null;
-            double minDistance = Double.MAX_VALUE;
-
-            for (CoordinateDto stop : remaining) {
-
-                double distance =
-                        calculateDistance(
-                                current.getLat(),
-                                current.getLon(),
-                                stop.getLat(),
-                                stop.getLon());
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    nearest = stop;
-                }
+                return new RouteResponse(
+                        "0 km",
+                        "0 hours",
+                        optimizedRoute);
             }
 
-            totalDistance += minDistance;
-            current = nearest;
+            // Start Point
+            CoordinateDto current =
+                    remaining.remove(0);
 
             optimizedRoute.add(current.getName());
-            remaining.remove(current);
+
+            // Nearest Neighbor Logic
+            while (!remaining.isEmpty()) {
+
+                CoordinateDto nearest = null;
+                double minDistance = Double.MAX_VALUE;
+
+                for (CoordinateDto stop : remaining) {
+
+                    double distance =
+                            calculateDistance(
+                                    current.getLat(),
+                                    current.getLon(),
+                                    stop.getLat(),
+                                    stop.getLon());
+
+                    if (distance < minDistance) {
+
+                        minDistance = distance;
+                        nearest = stop;
+                    }
+                }
+
+                totalDistance += minDistance;
+                current = nearest;
+
+                optimizedRoute.add(current.getName());
+                remaining.remove(current);
+            }
+
+            // Average Speed
+            double avgSpeed = 50;
+
+            double duration =
+                    totalDistance / avgSpeed;
+
+            return new RouteResponse(
+                    String.format("%.2f km", totalDistance),
+                    String.format("%.2f hours", duration),
+                    optimizedRoute);
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(
+                    "Route optimization failed");
         }
-
-        double avgSpeed = 50;
-        double duration = totalDistance / avgSpeed;
-
-        return new RouteResponse(
-                String.format("%.2f km", totalDistance),
-                String.format("%.2f hours", duration),
-                optimizedRoute
-        );
     }
 
+    // Distance Formula
     private double calculateDistance(
             double lat1,
             double lon1,

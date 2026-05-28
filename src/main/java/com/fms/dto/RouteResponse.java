@@ -4,27 +4,30 @@ import java.util.List;
 
 public class RouteResponse {
 
-    private String distance;
+    private String totalDistance;
     private String duration;
     private List<String> optimizedRoute;
 
+    // Default Constructor
     public RouteResponse() {
     }
 
-    public RouteResponse(String distance,
+    // Parameterized Constructor
+    public RouteResponse(String totalDistance,
                          String duration,
                          List<String> optimizedRoute) {
-        this.distance = distance;
+
+        this.totalDistance = totalDistance;
         this.duration = duration;
         this.optimizedRoute = optimizedRoute;
     }
 
-    public String getDistance() {
-        return distance;
+    public String getTotalDistance() {
+        return totalDistance;
     }
 
-    public void setDistance(String distance) {
-        this.distance = distance;
+    public void setTotalDistance(String totalDistance) {
+        this.totalDistance = totalDistance;
     }
 
     public String getDuration() {

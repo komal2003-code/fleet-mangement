@@ -12,12 +12,16 @@ public class DeliveryTask {
     private String pickupLocation;
     private String dropLocation;
 
-    private String status; 
-    // PENDING, IN_PROGRESS, COMPLETED
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus status;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
+    
+    @ManyToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
 
     public DeliveryTask() {
     }
@@ -46,11 +50,11 @@ public class DeliveryTask {
         this.dropLocation = dropLocation;
     }
 
-    public String getStatus() {
+    public DeliveryStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(DeliveryStatus status) {
         this.status = status;
     }
 
@@ -60,5 +64,12 @@ public class DeliveryTask {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 }

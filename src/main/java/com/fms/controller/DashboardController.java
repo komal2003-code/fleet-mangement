@@ -126,9 +126,11 @@ public class DashboardController {
                 model.addAttribute("error", "Please enter JSON input!");
                 return "optimize";
             }
-
+            System.out.println("JSON = " + json);
             CoordinateRequest request =
-                    objectMapper.readValue(json, CoordinateRequest.class);
+                    objectMapper.readValue(
+                            "{\"stops\":" + json + "}",
+                            CoordinateRequest.class);
 
             RouteResponse result =
                     routeOptimizationService.getRoute(request);
@@ -136,9 +138,41 @@ public class DashboardController {
             model.addAttribute("result", result);
 
         } catch (Exception e) {
-            model.addAttribute("error", "Invalid JSON format!");
+            e.printStackTrace();
+            model.addAttribute("error", e.getMessage());
         }
 
         return "optimize";
+    }
+    @GetMapping("/dispatch")
+    public String dispatchPage(Model model) {
+
+        model.addAttribute(
+                "tasks",
+                taskService.getAllTasks());
+
+        model.addAttribute(
+                "drivers",
+                driverService.getAllDrivers());
+
+        model.addAttribute(
+                "vehicles",
+                vehicleService.getAllVehicles());
+
+        model.addAttribute(
+                "routes",
+                routeService.getAllRoutes());
+
+        return "dispatch";
+    }
+    @PostMapping("/dispatch/{id}")
+    public String dispatch(@PathVariable Long id, RedirectAttributes ra) {
+        try {
+            taskservice.dispatchTask(id);
+            ra.addFlashAttribute("success", "Task Dispatched Successfully");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/tasks";
     }
     }
