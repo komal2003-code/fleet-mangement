@@ -31,8 +31,18 @@
 
 <div class="card p-4 mt-4">
 
-<form action="/dispatch/save"
-      method="post">
+	<div th:if="${success}"
+	     class="alert alert-success"
+	     th:text="${success}">
+	</div>
+
+	<div th:if="${error}"
+	     class="alert alert-danger"
+	     th:text="${error}">
+	</div>
+	
+	<form th:action="@{/dispatch/save}"
+	      method="post">
 
 <div class="mb-3">
 
@@ -48,7 +58,7 @@ Select Task
 <option
 th:each="t : ${tasks}"
 th:value="${t.id}"
-th:text="${t.customerName}">
+ th:text="${t.pickupLocation}">
 </option>
 
 </select>
@@ -66,12 +76,10 @@ th:text="${t.customerName}">
 Select Driver
 </option>
 
-<option
-th:each="d : ${drivers}"
-th:value="${d.id}"
-th:text="${d.name}">
+<option th:each="d : ${drivers}"
+        th:value="${d.id}"
+        th:text="${d.driverName}">
 </option>
-
 </select>
 
 </div>
@@ -111,7 +119,7 @@ Select Route
 <option
 th:each="r : ${routes}"
 th:value="${r.id}"
-th:text="${r.startLocation}">
+th:text="${r.source + ' → ' + r.destination}">
 </option>
 
 </select>
@@ -123,7 +131,86 @@ Dispatch
 </button>
 
 </form>
+<h3 class="mt-4">Dispatch Status</h3>
 
+<div class="table-responsive">
+<table class="table table-bordered table-striped">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Pickup</th>
+<th>Drop</th>
+<th>Driver</th>
+<th>Vehicle</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr th:each="t : ${tasks}">
+
+<td th:text="${t.id}"></td>
+<td th:text="${t.pickupLocation}"></td>
+<td th:text="${t.dropLocation}"></td>
+
+<td th:text="${t.driver != null ? t.driver.driverName : '-'}"></td>
+
+<td th:text="${t.vehicle != null ? t.vehicle.vehicleNumber : '-'}"></td>
+
+<td>
+
+<span th:if="${t.status.name()=='UNASSIGNED'}"
+      class="badge bg-secondary">
+UNASSIGNED
+</span>
+
+<span th:if="${t.status.name()=='DISPATCHED'}"
+      class="badge bg-warning">
+DISPATCHED
+</span>
+
+<span th:if="${t.status.name()=='IN_TRANSIT'}"
+      class="badge bg-info">
+IN_TRANSIT
+</span>
+
+<span th:if="${t.status.name()=='DELIVERED'}"
+      class="badge bg-success">
+DELIVERED
+</span>
+
+</td>
+
+<td>
+
+<a th:if="${t.status.name() == 'UNASSIGNED'}"
+   th:href="@{/dispatch/start/{id}(id=${t.id})}"
+   class="btn btn-success btn-sm">
+Dispatch
+</a>
+
+<a th:if="${t.status.name() == 'DISPATCHED'}"
+   th:href="@{/dispatch/transit/{id}(id=${t.id})}"
+   class="btn btn-warning btn-sm">
+Transit
+</a>
+
+<a th:if="${t.status.name() == 'IN_TRANSIT'}"
+   th:href="@{/dispatch/deliver/{id}(id=${t.id})}"
+   class="btn btn-primary btn-sm">
+Deliver
+</a>
+
+</td>
+
+</tr>
+
+</tbody>
+</table>
+</div>
 </div>
 
 </div>

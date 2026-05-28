@@ -165,14 +165,82 @@ public class DashboardController {
 
         return "dispatch";
     }
-    @PostMapping("/dispatch/{id}")
-    public String dispatch(@PathVariable Long id, RedirectAttributes ra) {
+    
+    @PostMapping("/dispatch/save")
+    public String dispatchSave(
+            @RequestParam Long taskId,
+            @RequestParam(required = false) Long driverId,
+            @RequestParam(required = false) Long vehicleId,
+            @RequestParam(required = false) Long routeId,
+            RedirectAttributes ra) {
+
         try {
-            taskservice.dispatchTask(id);
-            ra.addFlashAttribute("success", "Task Dispatched Successfully");
+
+            taskService.dispatchTask(taskId);
+
+            ra.addFlashAttribute(
+                    "success",
+                    "Task Dispatched Successfully");
+
         } catch (Exception e) {
-            ra.addFlashAttribute("error", e.getMessage());
+
+            e.printStackTrace();   // IMPORTANT
+
+            ra.addFlashAttribute(
+                    "error",
+                    e.getMessage());
         }
-        return "redirect:/tasks";
+
+        return "redirect:/dispatch";
+    }
+    @GetMapping("/dispatch/start/{id}")
+    public String dispatchTask(@PathVariable Long id,
+                               RedirectAttributes ra) {
+
+        try {
+            taskService.dispatchTask(id);
+            ra.addFlashAttribute("success",
+                    "Task DISPATCHED");
+        }
+        catch(Exception e) {
+            ra.addFlashAttribute("error",
+                    e.getMessage());
+        }
+
+        return "redirect:/dispatch";
+    }
+
+    @GetMapping("/dispatch/transit/{id}")
+    public String transitTask(@PathVariable Long id,
+                              RedirectAttributes ra) {
+
+        try {
+            taskService.transitTask(id);
+            ra.addFlashAttribute("success",
+                    "Task IN_TRANSIT");
+        }
+        catch(Exception e) {
+            ra.addFlashAttribute("error",
+                    e.getMessage());
+        }
+
+        return "redirect:/dispatch";
+    }
+
+    @GetMapping("/dispatch/deliver/{id}")
+    public String deliverTask(@PathVariable Long id,
+                              RedirectAttributes ra) {
+
+        try {
+            taskService.deliverTask(id);
+            ra.addFlashAttribute("success",
+                    "Task DELIVERED");
+        }
+        catch(Exception e) {
+            ra.addFlashAttribute("error",
+                    e.getMessage());
+        }
+
+        return "redirect:/dispatch";
     }
     }
