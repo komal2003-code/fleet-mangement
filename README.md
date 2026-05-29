@@ -1,3 +1,7 @@
+## System Diagram
+
+![Fleet Diagram](Er.png.mwb)
+
 # Fleet Management and Route Optimization Engine
 
 ## Project Overview
