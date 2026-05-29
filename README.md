@@ -1,6 +1,6 @@
 ## System Diagram
 
-![Fleet Diagram](Er.png.mwb)
+![Fleet Diagram](Er.png)
 
 # Fleet Management and Route Optimization Engine
 
